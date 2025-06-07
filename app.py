@@ -404,26 +404,20 @@ async def generate_answer(question, relevant_results, max_retries=2):
                 context += f"\n\n{source_type} (URL: {result['url']}):\n{result['content'][:1500]}"
             
             # Prepare improved prompt
-            prompt = f"""You are a helpful assistant for the Tools in Data Science course at IIT Madras.
+            prompt = f"""You are a helpful TA for the Tools in Data Science (TDS) course at IIT Madras.
+Answer the following student question based ONLY on the provided context. 
+If the answer is not found in the context, respond exactly with: "I don't know".
 
-Use the context below to answer the student's question. If the answer is not directly found, make an informed attempt using the context — do not leave the answer empty."
+Keep your response short, factual, and include links directly from the context when helpful."
             
             Context:
             {context}
             
             Question: {question}
+
+            Answer: """
             
-            Return your response in this exact format:
-            1. A comprehensive yet concise answer
-            2. A "Sources:" section that lists the URLs and relevant text snippets you used to answer
-            
-            Sources must be in this exact format:
-            Sources:
-            1. URL: [exact_url_1], Text: [brief quote or description]
-            2. URL: [exact_url_2], Text: [brief quote or description]
-            
-            Make sure the URLs are copied exactly from the context without any changes.
-            """
+    
             
             logger.info("Sending request to LLM API")
             # Call OpenAI API through aipipe proxy
@@ -433,11 +427,18 @@ Use the context below to answer the student's question. If the answer is not dir
                 "Content-Type": "application/json"
             }
             payload = {
-                "model": "gpt-4o-mini",
-                "messages": [
-                    {"role": "system", "content": "You are a helpful assistant that provides accurate answers based only on the provided context. Always include sources in your response with exact URLs."},
-                    {"role": "user", "content": prompt}
-                ],
+    "model": "gpt-4o-mini",
+    "messages": [
+        {
+            "role": "system",
+            "content": (
+                "You are a helpful assistant that provides short and accurate answers based only on the provided context. "
+                "If the answer is missing in the context, reply with 'I don't know'. "
+                "Include URLs from the context when possible, copied exactly."
+            )
+        },
+        {"role": "user", "content": prompt}
+    ],
                 "temperature": 0.3  # Lower temperature for more deterministic outputs
             }
             

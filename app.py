@@ -404,11 +404,14 @@ async def generate_answer(question, relevant_results, max_retries=2):
                 context += f"\n\n{source_type} (URL: {result['url']}):\n{result['content'][:1500]}"
             
             # Prepare improved prompt
-            prompt = f"""You are a helpful TA for the Tools in Data Science (TDS) course at IIT Madras.
-Answer the following student question based ONLY on the provided context. 
-If the answer is not found in the context, respond exactly with: "I don't know".
+            prompt = f"""You are a helpful assistant for the Tools in Data Science (TDS) course at IIT Madras.
 
-Keep your response short, factual, and include links directly from the context when helpful."
+Answer the student's question based ONLY on the context provided below.
+
+If the answer is not available in the context, you MUST reply with **exactly**:  
+"I don't know."
+
+Your answer will be automatically tested. Be sure to include this phrase if context is missing."
             
             Context:
             {context}
@@ -439,7 +442,7 @@ Keep your response short, factual, and include links directly from the context w
         },
         {"role": "user", "content": prompt}
     ],
-                "temperature": 0.3  # Lower temperature for more deterministic outputs
+                "temperature": 0.0  # Lower temperature for more deterministic outputs
             }
             
             async with aiohttp.ClientSession() as session:
@@ -467,7 +470,7 @@ Keep your response short, factual, and include links directly from the context w
                 raise HTTPException(status_code=500, detail=error_msg)
             await asyncio.sleep(2)  # Wait before retry
 
-# Function to process multimodal content (text + image)
+# Function to process multimodal content (text + image) 
 async def process_multimodal_query(question, image_base64):
     if not API_KEY:
         error_msg = "API_KEY environment variable not set"
@@ -603,6 +606,7 @@ async def query_knowledge_base(request: QueryRequest):
     try:
         # Log the incoming request
         logger.info(f"Received query request: question='{request.question[:50]}...', image_provided={request.image is not None}")
+        
         
         if not API_KEY:
             error_msg = "API_KEY environment variable not set"

@@ -23,6 +23,9 @@ It can automatically answer student queries based on:
 ### `POST /query`
 
 This is the main endpoint to ask questions to the TDS Virtual TA.
+>⚠️ Note: If you try to access `/query` directly in the browser, you may see **"Method Not Allowed"**.  
+> This is expected because `/query` only accepts a `POST` request (not a `GET`).  
+> ✅ You can test it properly via `/docs`, Postman, or `curl`. During evaluation, the `/query` endpoint will work correctly.
 
 #### 📝 Input Format (JSON):
 

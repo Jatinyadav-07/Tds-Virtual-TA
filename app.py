@@ -408,7 +408,7 @@ async def generate_answer(question, relevant_results, max_retries=2):
 
 Answer the student's question based ONLY on the context provided below.
 
-If the answer is not available in the context, you MUST reply with **exactly**:  
+If the answer is not available in the context, you MUST reply with  
 "I don't know."
 
 Your answer will be automatically tested. Be sure to include this phrase if context is missing."
@@ -442,7 +442,7 @@ Your answer will be automatically tested. Be sure to include this phrase if cont
         },
         {"role": "user", "content": prompt}
     ],
-                "temperature": 0.0  # Lower temperature for more deterministic outputs
+                "temperature": 0.3  # Lower temperature for more deterministic outputs
             }
             
             async with aiohttp.ClientSession() as session:

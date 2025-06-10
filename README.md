@@ -4,7 +4,7 @@ A virtual assistant built for the *Tools in Data Science* (TDS) course at IIT Ma
 
 It can automatically answer student queries based on:
 
-- 📘 Course Content (Jan 2025)
+- 📘 Course Content (Jan 2025-Apr 2025)
 - 🗣️ Discourse Q&A Posts (Jan 1 – Apr 14, 2025)
 - 📸 Optional screenshot images (base64 format)
 - 🧠 AI-powered responses via [AIPipe.org](https://aipipe.org)
